@@ -542,7 +542,7 @@ input{font-size:16px!important}
 </div>
 
 <script>
-const TODAY = '2026-04-06';
+const TODAY = (()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`})();
 const LABOR = 2500, AVG = 28;
 const BASE_WO_PARTS = ['oil','oilf','airf'];
 const SERVICE = 'СТО Васи Пупкина';
