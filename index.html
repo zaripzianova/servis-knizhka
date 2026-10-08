@@ -3,7 +3,6 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#F6F6F6">
 <style>[hidden]{display:none!important}body{margin:0}</style>
 <title>Сервисная книжка</title>
@@ -923,7 +922,7 @@ const SCREENS={
   partpage(st){
     const r=R(st.id), x=compute(r);
     const hist=sortRecs().filter(rec=>rec.parts.includes(r.id));
-    const LBL={over:'Пора менять',soon:'Скоро менять',ok:'В порядке',unknown:S.flags[r.id]==='check'?'Давно не меняли':'Нужно уточнить историю',none:'Интервал не указан'};
+    const LBL={over:'Пора менять',soon:'Скоро менять',ok:'В порядке',unknown:S.flags[r.id]==='check'?'Давно не меняли':'Без подтверждения',none:'Интервал не указан'};
     const head=x.status==='unknown'||x.status==='none'
       ?`<p class="pp-main">Нет информации о замене</p><p class="muted small">Укажите последнюю замену, чтобы увидеть остаток.</p>${canNew(r)?`<button class="btn btn-outline block" data-a="factory" data-id="${r.id}">Ещё не менял — стоит оригинальная</button>`:''}`
       :`<p class="pp-main">${x.main}</p><p class="muted small">${x.last.source==='factory'?'Оригинальная деталь, не менялась с завода':`Последняя замена: ${fmtDateLow(x.last.date)} · ${km(x.last.mileage)} км`}</p>`;
@@ -1071,7 +1070,7 @@ const TABS={
       ${res.over.length?sec('over','Пора менять',res.over)+res.over.map(partCard).join(''):''}
       ${res.soon.length?sec('soon','Скоро менять',res.soon)+res.soon.map(partCard).join(''):''}
       ${res.ok.length?sec('ok','В порядке',res.ok)+res.ok.map(partCard).join(''):''}
-      ${res.unknown.length?sec('unknown','Нужно уточнить историю',res.unknown)+unk.map(partCard).join('')
+      ${res.unknown.length?sec('unknown','Без подтверждения',res.unknown)+unk.map(partCard).join('')
         +(res.unknown.length>3?`<button class="btn btn-text sm more" data-a="more-unknown">${nav.allUnknown?'Свернуть':`Показать все (${res.unknown.length})`}</button>`:''):''}`;
   },
   book(){
@@ -1084,11 +1083,11 @@ const TABS={
         <div class="row-b"><div><div class="strip-v">${km(S.v.mileage)} км</div><span class="muted small">Пробег обновлён ${fmtDateLow(S.v.updated)}</span></div>
           <button class="btn btn-primary sm" data-a="mileage">Изменить</button></div>
       </section>
-      ${res.over.length+res.soon.length?`<section class="pnl"><h3 class="pnl-h">Пора менять<span class="count">${res.over.length+res.soon.length}</span></h3>
+      ${res.over.length+res.soon.length?`<section class="pnl"><h3 class="pnl-h">Пора менять</h3>
         <div class="rc-row">${[...res.over,...res.soon].map(attnCard).join('')}</div></section>`:''}
-      ${res.ok.length?`<section class="pnl"><h3 class="pnl-h">В порядке<span class="count">${res.ok.length}</span></h3>
+      ${res.ok.length?`<section class="pnl"><h3 class="pnl-h">В порядке</h3>
         <div class="rc-row">${res.ok.map(okCard).join('')}</div></section>`:''}
-      ${res.unknown.length?`<section class="pnl"><h3 class="pnl-h">Нужно уточнить историю<span class="count">${res.unknown.length}</span></h3>
+      ${res.unknown.length?`<section class="pnl"><h3 class="pnl-h">Без подтверждения</h3>
         <div class="rc-row">${res.unknown.map(unkCard).join('')}</div></section>`:''}
       ${(()=>{const ex=S.rules.filter(r=>r.excluded);return ex.length?`<section class="pnl"><h3 class="pnl-h">Исключённые</h3><p class="pnl-s">${n(ex.length)} — не отслеживаются</p>
         <div class="ex-list">${ex.map(r=>`<button class="ex-chip" data-a="partpage" data-id="${r.id}">${r.name}</button>`).join('')}</div></section>`:''})()}`;
